@@ -1,0 +1,143 @@
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <sstream> 
+#include <vector>
+
+using namespace std;
+
+class Nodo {
+	int elemento;
+	Nodo *der;
+	Nodo *izq;
+
+public:
+	Nodo(int elemento) {
+		this->elemento = elemento;
+		der = nullptr;
+		izq = nullptr;
+	}
+
+	int getElemento() { return elemento; }
+	Nodo *getDerecha() { return der; }
+	Nodo *getIzquierda() { return izq; }
+	void setDerecha(Nodo *der) { this->der = der; }
+	void setIzquierda(Nodo *izq) { this->izq = izq; }
+
+};
+
+class Arbol {
+	Nodo *inicio;
+	int N;
+
+public:
+	Arbol() {
+		inicio = nullptr;
+		N = 0;
+	}
+
+	Nodo *getInicio() { return inicio; }
+
+	void Arbolito(int elemento) {
+		Nodo *temp = new Nodo(elemento);
+		if (inicio == nullptr) {
+			inicio = temp;
+
+		}
+		else {
+			Insertar(inicio, elemento);
+
+		}
+		N++;
+	}
+
+	bool Insertar(Nodo *raiz, int elemento) {
+
+		if (raiz->getElemento() < elemento) {
+
+			if (raiz->getDerecha() == nullptr) {
+				Nodo *temp = new Nodo(elemento);
+				raiz->setDerecha(temp);
+				return true;
+			}
+			else {
+				Insertar(raiz->getDerecha(), elemento);
+			}
+		}
+		else {
+			if (raiz->getIzquierda() == nullptr) {
+				Nodo *temp = new Nodo(elemento);
+				raiz->setIzquierda(temp);
+				return true;
+			}
+			else {
+				Insertar(raiz->getIzquierda(), elemento);
+			}
+		}
+	}
+
+	void Recorrer(Nodo *inicio) {
+		if (inicio == nullptr) {
+			return;
+		}
+		Recorrer(inicio->getIzquierda());
+		cout << " -> " << inicio->getElemento();
+		Recorrer(inicio->getDerecha());
+
+	}
+
+};
+
+
+
+
+void GuardarARch() {
+	
+	ofstream Arch = ofstream("in.txt");
+	if (Arch.is_open()) {
+		Arch << 5 << endl;
+		for (int i = 0; i < 10; i++)
+			Arch << (10 + i * 4) << " " << (20 + i * 2) << " " << (20 + i * 8)<<endl;
+	}		
+	Arch.close();
+}
+
+
+void Leer() {
+	string Linea;
+	fstream archL("in.txt", ios::in);
+	getline(archL, Linea);
+	int Cantidad = atoi(Linea.c_str());
+	
+	for (int i = 0; i < Cantidad; i++) {
+		getline(archL, Linea);
+		istringstream    palabra(Linea);
+		string Elemento;
+		getline(palabra, Elemento, ' ');
+
+		cout << "\n-> "<<Elemento;
+		getline(palabra, Elemento, ' ');
+		cout << " " << Elemento;
+		getline(palabra, Elemento, ' ');
+		cout << " " << Elemento;
+
+	}
+
+}
+
+void main(){
+
+	//GuardarARch();
+	Leer();
+	cout << endl;
+	Arbol *arb = new Arbol();
+	arb->Arbolito(20);
+	arb->Arbolito(15);
+	arb->Arbolito(30);
+	arb->Arbolito(18);
+	arb->Arbolito(25);
+
+	arb->Recorrer(arb->getInicio());
+	cout << endl;
+	system("pause");
+}
