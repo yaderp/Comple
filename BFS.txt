@@ -1,0 +1,46 @@
+# include <vector>
+# include <list>
+using namespace std;
+
+class Graph
+{
+	vector<vector<int>> Arista;
+	vector<char> visitado;
+public:
+
+	Graph(int V)
+	{
+		Arista.resize(V);
+		visitado.resize(V);
+	}
+
+	void Agregar(int v, int w)
+	{
+		Arista[v].push_back(w);
+	}
+
+	void BFS(int s)
+	{
+		for (auto i : visitado) i = false;
+		list<int> q;
+		visitado[s] = true;
+		q.push_back(s);
+		while (!q.empty())
+		{
+			s = q.front();
+			cout << s << " ";
+			q.pop_front();
+			for (auto i : Arista[s])
+			{
+				if (!visitado[i])
+				{
+					visitado[i] = true;
+					q.push_back(i);
+				}
+			}
+		}
+
+	}
+
+};
+
